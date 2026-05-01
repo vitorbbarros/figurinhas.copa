@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Figurinhas Copa 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;}
+html{font-size:16px;overflow-x:hidden;}
+body{font-family:'DM Sans',sans-serif;background:#0a0f0d;color:#f0f4f0;overflow-x:hidden;width:100%;-webkit-text-size-adjust:100%;}
+#app{width:100%;max-width:100vw;}
+.screen{display:none;}
+.screen.active{display:block;}
+
+.login-wrap{min-height:100svh;display:flex;align-items:center;justify-content:center;background:#0a0f0d;padding:24px 16px;position:relative;overflow:hidden;}
+.deco{font-family:'Bebas Neue',sans-serif;font-size:min(45vw,260px);color:rgba(0,200,83,0.045);position:absolute;right:-8px;bottom:-16px;line-height:1;pointer-events:none;letter-spacing:-4px;z-index:0;}
+.login-card{background:#111a14;border:1px solid #2a3d2e;border-radius:20px;padding:28px 24px;width:100%;max-width:340px;position:relative;z-index:1;}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.ball{width:40px;height:40px;min-width:40px;border-radius:50%;background:#00c853;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.login-h1{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;line-height:1;color:#f0f4f0;}
+.login-h2{font-size:12px;color:#6b8570;margin-bottom:24px;padding-left:50px;margin-top:2px;}
+.f-label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6b8570;margin-bottom:8px;}
+.f-wrap{margin-bottom:16px;}
+.f-input{display:block;width:100%;background:#0d1a10;border:1.5px solid #2a3d2e;border-radius:10px;padding:14px 16px;font-size:16px;line-height:1.4;color:#f0f4f0;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .2s;}
+.f-input:focus{border-color:#00c853;}
+.f-input::placeholder{color:#3a5240;}
+
+.btn-login{
+  display:block;width:100%;height:56px;padding:0;margin-top:10px;
+  background:#00c853;color:#041208;border:none;border-radius:12px;
+  font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;
+  cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+  touch-action:manipulation;
+  position:relative;z-index:10;
+  outline:none;
+  user-select:none;-webkit-user-select:none;
+}
+.btn-login:active{background:#00a844;}
+
+.login-err{font-size:13px;color:#ff6b6b;min-height:20px;text-align:center;margin-top:12px;}
+
+.hdr{background:#070e09;border-bottom:1px solid #2a3d2e;padding:0 16px;}
+.hdr-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:8px;flex-wrap:wrap;}
+.hdr-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(15px,4vw,19px);letter-spacing:1.5px;line-height:1.1;}
+.hdr-title em{color:#00c853;font-style:normal;}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.badge{font-size:12px;font-weight:600;background:#162019;border:1px solid #2a3d2e;border-radius:20px;padding:6px 13px;color:#00c853;}
+.btn-sair{height:34px;padding:0 14px;cursor:pointer;background:transparent;border:1px solid #2a3d2e;border-radius:20px;color:#6b8570;font-size:12px;font-family:'DM Sans',sans-serif;touch-action:manipulation;-webkit-appearance:none;appearance:none;}
+.btn-sair:active{background:#1a2b1e;}
+
+.stats{padding:12px 16px 0;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;}
+.sc{background:#111a14;border:1px solid #2a3d2e;border-radius:10px;padding:10px 10px 8px;}
+.sc .n{font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,5vw,24px);line-height:1;}
+.sc.g .n{color:#00c853;}
+.sc.gold .n{color:#ffd600;}
+.sc .l{font-size:10px;color:#6b8570;margin-top:2px;font-weight:500;}
+.prog{margin-bottom:10px;}
+.prog-track{height:6px;background:#1a2b1e;border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#00952e,#00c853);border-radius:3px;transition:width .35s ease;}
+.prog-row{display:flex;justify-content:space-between;margin-top:4px;}
+.prog-row span{font-size:10px;color:#6b8570;}
+
+.grid-wrap{padding:8px 16px 40px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:10px;}
+.gc-card{background:#1a2b1e;border:1px solid #2a3d2e;border-radius:14px;overflow:hidden;}
+.gc-head{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #2a3d2e;}
+.gc-left{display:flex;align-items:center;gap:8px;}
+.gc-letter{font-family:'Bebas Neue',sans-serif;font-size:18px;line-height:1;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.gc-name{font-size:13px;font-weight:600;}
+.gc-prog{font-size:11px;color:#6b8570;}
+.sel{padding:8px 12px 10px;border-top:1px solid #1e2e22;}
+.sel-n{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#6b8570;margin-bottom:6px;}
+.figs{display:flex;flex-wrap:wrap;gap:5px;}
+
+.fb{
+  width:34px;height:34px;border-radius:7px;
+  border:1px solid #263a2a;background:#111e14;
+  color:#3d5e42;font-size:11px;font-weight:500;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Sans',sans-serif;
+  touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+  -webkit-appearance:none;appearance:none;
+}
+.fb:active{opacity:.7;}
+.fb.have{
+  background:#b71c1c;border:2px solid #ff1744;color:#fff;
+  font-weight:700;font-size:12px;transform:scale(1.1);
+  box-shadow:0 0 0 2px rgba(255,23,68,.35),0 0 10px rgba(255,23,68,.5);
+  position:relative;z-index:2;
+}
+.fb.have:active{transform:scale(1.0);}
+
+.ga .gc-letter{background:#0d2e4a;color:#4ab3f4;}
+.gb .gc-letter{background:#1a2e0d;color:#7ec850;}
+.gc2 .gc-letter{background:#2e1a0d;color:#f4944a;}
+.gd .gc-letter{background:#2a0d2e;color:#c46af4;}
+.ge .gc-letter{background:#0d2a2a;color:#4af4e0;}
+.gf .gc-letter{background:#2e2700;color:#f4d03f;}
+.gg .gc-letter{background:#2e0d1a;color:#f44a8a;}
+.gh .gc-letter{background:#0d2e4a;color:#4ab3f4;}
+.gi .gc-letter{background:#1e2000;color:#ccd647;}
+.gj .gc-letter{background:#1a2e0d;color:#7ec850;}
+.gk .gc-letter{background:#2a0d2e;color:#c46af4;}
+.gl .gc-letter{background:#0d2a2a;color:#4af4e0;}
+.gx .gc-letter{background:#2e2700;color:#ffd600;}
+.gz .gc-letter{background:#2e0a0a;color:#ff4444;}
+
+@media(max-width:380px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .fb{width:31px;height:31px;font-size:10px;}
+  .fb.have{font-size:11px;}
+  .login-card{padding:22px 18px;}
+}
+
+/* Banner de aviso navegador interno */
+#inapp-warn{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:#0a0f0d;align-items:center;justify-content:center;padding:24px;
+}
+#inapp-warn.show{display:flex;}
+.warn-box{
+  background:#111a14;border:1px solid #2a3d2e;border-radius:20px;
+  padding:32px 24px;width:100%;max-width:340px;text-align:center;
+}
+.warn-icon{font-size:48px;margin-bottom:16px;}
+.warn-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:#f0f4f0;margin-bottom:10px;}
+.warn-txt{font-size:14px;color:#6b8570;line-height:1.6;margin-bottom:24px;}
+.warn-txt strong{color:#f0f4f0;}
+.warn-steps{background:#0d1a10;border-radius:12px;padding:16px;text-align:left;margin-bottom:20px;}
+.warn-steps p{font-size:13px;color:#a0b8a4;line-height:1.7;margin:0;}
+.warn-steps span{color:#00c853;font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- Aviso navegador interno (WhatsApp/Telegram) -->
+<div id="inapp-warn">
+  <div class="warn-box">
+    <div class="warn-icon">⚠️</div>
+    <div class="warn-title">Abra no Navegador</div>
+    <p class="warn-txt">Este app está sendo aberto dentro do <strong>WhatsApp / Telegram</strong>, que bloqueia JavaScript e impede o funcionamento.</p>
+    <div class="warn-steps">
+      <p>
+        <span>1.</span> Toque nos <strong>3 pontinhos</strong> (⋮) no canto superior direito<br>
+        <span>2.</span> Escolha <strong>"Abrir no navegador"</strong> ou<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<strong>"Abrir no Chrome"</strong> / <strong>"Safari"</strong><br>
+        <span>3.</span> Se não aparecer essa opção, <strong>baixe o arquivo</strong> e abra pelo gerenciador
+      </p>
+    </div>
+    <p style="font-size:12px;color:#3a5240;">Após abrir no navegador, tudo funcionará normalmente ✅</p>
+  </div>
+</div>
+
+<div id="app">
+<div id="scr-login" class="screen active">
+  <div class="login-wrap">
+    <div class="deco">2026</div>
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="ball">⚽</div>
+        <div class="login-h1">Copa do Mundo</div>
+      </div>
+      <p class="login-h2">Controle de Figurinhas · 2026</p>
+      <div class="f-wrap">
+        <label class="f-label" for="inp-u">Usuário</label>
+        <input class="f-input" id="inp-u" type="text" placeholder="ex: user01"
+          autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"/>
+      </div>
+      <div class="f-wrap">
+        <label class="f-label" for="inp-p">Senha</label>
+        <input class="f-input" id="inp-p" type="tel" placeholder="ex: 7555"
+          inputmode="numeric" maxlength="4" autocomplete="off"/>
+      </div>
+      <button class="btn-login" id="btn-login" onclick="doLogin()">ENTRAR</button>
+      <p class="login-err" id="login-err"></p>
+    </div>
+  </div>
+</div>
+
+<div id="scr-album" class="screen">
+  <div class="hdr">
+    <div class="hdr-inner">
+      <div class="hdr-title">⚽ FIGURINHAS <em>COPA 2026</em></div>
+      <div class="hdr-right">
+        <span class="badge" id="lbl-user">—</span>
+        <button class="btn-sair" id="btn-sair" onclick="doLogout()">Sair</button>
+      </div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stats-grid">
+      <div class="sc g"><div class="n" id="s-have">0</div><div class="l">Tenho</div></div>
+      <div class="sc"><div class="n" id="s-miss">994</div><div class="l">Faltando</div></div>
+      <div class="sc"><div class="n">994</div><div class="l">Total</div></div>
+      <div class="sc gold"><div class="n" id="s-pct">0%</div><div class="l">Completo</div></div>
+    </div>
+    <div class="prog">
+      <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+      <div class="prog-row"><span id="prog-txt">0 de 994</span><span id="prog-pct">0%</span></div>
+    </div>
+  </div>
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+</div>
+
+<script>
+// Detecta navegador interno (WhatsApp, Telegram, Instagram, etc.)
+(function(){
+  var ua = navigator.userAgent || '';
+  var isAndroidWebView = /wv/.test(ua) && /Android/.test(ua);
+  var isIOSInApp = /iPhone|iPad|iPod/.test(ua) && !/Safari/.test(ua) && /AppleWebKit/.test(ua);
+  var isKnownInApp = /WhatsApp|Telegram|FBAN|FBAV|Instagram|Line|Snapchat/.test(ua);
+  if(isAndroidWebView || isIOSInApp || isKnownInApp){
+    document.getElementById('inapp-warn').classList.add('show');
+  }
+})();
+
+var USERS={
+  user01:"7555",user02:"6699",user03:"8840",user04:"2266",user05:"9944",
+  user06:"8844",user07:"7336",user08:"7036",user09:"5533",user10:"5599",
+  user11:"7819",user12:"5577",user13:"3399",user14:"3366",user15:"3728",
+  user16:"8777",user17:"5599",user18:"4822",user19:"9922",user20:"5565",
+  user21:"6699",user22:"9933",user23:"6633",user24:"9977",user25:"2294",
+  user26:"2255",user27:"9933",user28:"9345",user29:"5344",user30:"2222",
+  user31:"8888",user32:"6398",user33:"6695",user34:"9933",user35:"2244",
+  user36:"3333",user37:"3696",user38:"8844",user39:"8866",user40:"9858",
+  user41:"6377",user42:"6677",user43:"9771",user44:"9377",user45:"8686",
+  user46:"6633",user47:"4477",user48:"1637",user49:"8981",user50:"9684"
+};
+
+var ALBUM=[
+  {id:"A",cls:"ga",label:"Grupo A",sels:[{c:"MEX",n:"México"},{c:"RSA",n:"África do Sul"},{c:"ECU",n:"Equador"},{c:"CZE",n:"Rep. Tcheca"}]},
+  {id:"B",cls:"gb",label:"Grupo B",sels:[{c:"CAN",n:"Canadá"},{c:"SEN",n:"Senegal"},{c:"HAI",n:"Haiti"},{c:"SCO",n:"Escócia"}]},
+  {id:"C",cls:"gc2",label:"Grupo C",sels:[{c:"BRA",n:"Brasil"},{c:"MAR",n:"Marrocos"},{c:"NOR",n:"Noruega"},{c:"BIH",n:"Bósnia"}]},
+  {id:"D",cls:"gd",label:"Grupo D",sels:[{c:"USA",n:"EUA"},{c:"PAR",n:"Paraguai"},{c:"JOR",n:"Jordânia"},{c:"QAT",n:"Catar"}]},
+  {id:"E",cls:"ge",label:"Grupo E",sels:[{c:"GER",n:"Alemanha"},{c:"CIV",n:"Costa do Marfim"},{c:"AUS",n:"Austrália"},{c:"SUI",n:"Suíça"}]},
+  {id:"F",cls:"gf",label:"Grupo F",sels:[{c:"FRA",n:"França"},{c:"SWE",n:"Suécia"},{c:"TUN",n:"Tunísia"},{c:"TUR",n:"Turquia"}]},
+  {id:"G",cls:"gg",label:"Grupo G",sels:[{c:"ARG",n:"Argentina"},{c:"NED",n:"Holanda"},{c:"IRN",n:"Irã"},{c:"EGY",n:"Egito"}]},
+  {id:"H",cls:"gh",label:"Grupo H",sels:[{c:"POR",n:"Portugal"},{c:"BEL",n:"Bélgica"},{c:"NZL",n:"Nova Zelândia"},{c:"JPN",n:"Japão"}]},
+  {id:"I",cls:"gi",label:"Grupo I",sels:[{c:"ENG",n:"Inglaterra"},{c:"ESP",n:"Espanha"},{c:"KSA",n:"Arábia Saudita"},{c:"URU",n:"Uruguai"}]},
+  {id:"J",cls:"gj",label:"Grupo J",sels:[{c:"COL",n:"Colômbia"},{c:"ALG",n:"Argélia"},{c:"IRQ",n:"Iraque"},{c:"KOR",n:"Coreia do Sul"}]},
+  {id:"K",cls:"gk",label:"Grupo K",sels:[{c:"PAN",n:"Panamá"},{c:"COD",n:"R.D. Congo"},{c:"UZB",n:"Uzbequistão"},{c:"CRO",n:"Croácia"}]},
+  {id:"L",cls:"gl",label:"Grupo L",sels:[{c:"GHA",n:"Gana"},{c:"AUT",n:"Áustria"},{c:"CUW",n:"Curaçao"},{c:"CPV",n:"Cabo Verde"}]},
+  {id:"X",cls:"gx",label:"Especiais FWC",sels:[{c:"FWC",n:"FWC / Especiais",count:20,start:0}]},
+  {id:"Z",cls:"gz",label:"Coca-Cola",sels:[{c:"COCA",n:"Coca-Cola",count:14}]}
+];
+
+var cu=null, ud={};
+
+function lk(u){return 'copa26_'+u;}
+function save(){try{localStorage.setItem(lk(cu),JSON.stringify(ud));}catch(e){}}
+function load(u){try{var s=localStorage.getItem(lk(u));return s?JSON.parse(s):{};}catch(e){return{};}}
+
+function doLogin(){
+  var u=(document.getElementById('inp-u').value||'').trim().toLowerCase();
+  var p=(document.getElementById('inp-p').value||'').trim();
+  var err=document.getElementById('login-err');
+  if(!u||!p){err.textContent='Preencha usuário e senha.';return;}
+  if(!USERS[u]){err.textContent='Usuário não encontrado.';return;}
+  if(USERS[u]!==p){err.textContent='Senha incorreta.';return;}
+  err.textContent='';
+  cu=u; ud=load(u);
+  document.getElementById('scr-login').classList.remove('active');
+  document.getElementById('scr-album').classList.add('active');
+  document.getElementById('lbl-user').textContent=u;
+  renderAlbum(); updateStats();
+}
+
+function doLogout(){
+  cu=null; ud={};
+  document.getElementById('inp-p').value='';
+  document.getElementById('scr-album').classList.remove('active');
+  document.getElementById('scr-login').classList.add('active');
+}
+
+function toggle(k){
+  ud[k]=!ud[k];
+  var b=document.getElementById('b'+k);
+  if(b){b.classList.toggle('have',!!ud[k]);}
+  updateStats(); save();
+}
+
+function renderAlbum(){
+  var g=document.getElementById('grid'); g.innerHTML='';
+  for(var i=0;i<ALBUM.length;i++){
+    var grp=ALBUM[i],gt=0,gh=0;
+    for(var j=0;j<grp.sels.length;j++){
+      var s=grp.sels[j],cnt=s.count||20,st=s.start!==undefined?s.start:1;
+      for(var n=st;n<st+cnt;n++){gt++;if(ud[s.c+'_'+n])gh++;}
+    }
+    var card=document.createElement('div');
+    card.className='gc-card '+grp.cls;
+    var html='<div class="gc-head"><div class="gc-left"><div class="gc-letter">'+grp.id+'</div><div class="gc-name">'+grp.label+'</div></div><span class="gc-prog" id="gp'+grp.id+'">'+gh+'/'+gt+'</span></div>';
+    for(var j=0;j<grp.sels.length;j++){
+      var s=grp.sels[j],cnt=s.count||20,st=s.start!==undefined?s.start:1,btns='';
+      for(var n=st;n<st+cnt;n++){
+        var k=s.c+'_'+n;
+        btns+='<button id="b'+k+'" class="fb'+(ud[k]?' have':'')+'"'+
+          ' onclick="toggle(\''+k+'\')">'+n+'</button>';
+      }
+      html+='<div class="sel"><div class="sel-n">'+s.n+'</div><div class="figs">'+btns+'</div></div>';
+    }
+    card.innerHTML=html; g.appendChild(card);
+  }
+}
+
+function updateStats(){
+  var total=0,have=0;
+  for(var i=0;i<ALBUM.length;i++){
+    var grp=ALBUM[i],gt=0,gh=0;
+    for(var j=0;j<grp.sels.length;j++){
+      var s=grp.sels[j],cnt=s.count||20,st=s.start!==undefined?s.start:1;
+      for(var n=st;n<st+cnt;n++){total++;gt++;if(ud[s.c+'_'+n]){have++;gh++;}}
+    }
+    var el=document.getElementById('gp'+grp.id);
+    if(el) el.textContent=gh+'/'+gt;
+  }
+  var pct=total?Math.round(have/total*100):0;
+  document.getElementById('s-have').textContent=have;
+  document.getElementById('s-miss').textContent=total-have;
+  document.getElementById('s-pct').textContent=pct+'%';
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('prog-txt').textContent=have+' de '+total;
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+
+document.getElementById('inp-u').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('inp-p').focus();});
+document.getElementById('inp-p').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+</script>
+
+</body>
+</html>
